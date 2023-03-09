@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<link rel="stylesheet" href="editormd/css/editormd.css" />
+<div id="test-editor">
+    <textarea style="display:none;">### 关于 Editor.md
+
+**Editor.md** 是一款开源的、可嵌入的 Markdown 在线编辑器（组件），基于 CodeMirror、jQuery 和 Marked 构建。
+    </textarea>
+</div>
+<script src="https://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+<script src="editormd/editormd.min.js"></script>
+<script type="text/javascript">
+    $(function() {
+        var editor = editormd("test-editor", {
+            width  : "1000px",
+            height : "600px",
+            path   : "editormd/lib/"
+        });
+    });
+    testEditor.getMarkdown();       // 获取 Markdown 源码
+testEditor.getHTML();           // 获取 Textarea 保存的 HTML 源码
+testEditor.getPreviewedHTML() //获取预览窗口里的 HTML，在开启 watch 且没有开启 saveHTMLToTextarea 时使用
+</script>
+</body>
+</html>
