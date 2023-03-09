@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="UTF-8">
+  <title>go 后台</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <link rel="alternate icon" type="image/png" href="../../static/assets/i/favicon.png">
+  <link rel="stylesheet" href="../../static/assets/css/amazeui.min.css"/>
+  <style>
+    .header {
+      text-align: center;
+    }
+    .header h1 {
+      font-size: 200%;
+      color: #333;
+      margin-top: 30px;
+    }
+    .header p {
+      font-size: 14px;
+    }
+    body{
+      width: 100vw;
+      height: 100vh;
+      padding-top: 8vh;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="am-g">
+      <h1>go 博客</h1>
+    </div>
+  </div>
+  <div class="am-g">
+    <div class=" am-u-sm-centered" style="width: 460px;">
+      <form method="post" class="am-form">
+        <label for="text">账号:</label>
+        <input type="text" name="account" id="text" maxlength="16" minlength="6" value=""  required>
+        <br>
+        <label for="password">密码:</label>
+        <input type="password" name="password" id="password" value="" maxlength="16" minlength="6" required>
+        <br>
+        <br/>
+        <div class="am-cf " >
+          <input type="button" name="" value="登 录" class="am-btn am-btn-success am-btn-sm am-fl submitFrom am-u-sm-centered">
+        </div>
+      </form>
+      <br>
+      
+    </div>
+  </div>
+  <footer style="position: absolute;    bottom: 3vh;width: 100vw;">
+      <p style="text-align: center;font-size: 12px;">©嘻嘻 &nbsp &nbsp&nbsp 2023-03<br/><br/>为学习而生</p>
+  </footer>  
+</body>
+
+</html>
+
+<script src="../../static/js/jquery.min.js"></script>
+<script >
+  $(".submitFrom").click(function () {
+      var account = $("input[name='account']").val();
+      var password = $("input[name='password']").val();
+      $.post("http://127.0.0.1:861/login",{account:account,password:password},function (data)
+      {
+        alert(data.msg)
+        if(data.result==100){
+          window.location.href = './login.html';
+        }
+
+        if(data.result==1){
+          mydate = new Date();
+          var t = parseInt(mydate.getTime()/1000)
+          localStorage.setItem('udsfesr',data.data.SignKey+"!@#@#$"+t)
+          window.location.href = './index.html';
+        }
+       
+      },"json")
+  });
+</script>

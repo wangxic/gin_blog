@@ -1,0 +1,167 @@
+<!doctype html>
+<html class="no-js fixed-layout">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>@ 嘻嘻个人 blog</title>
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-title" content="Amaze UI" />
+  <link rel="stylesheet" href="../../static/assets/css/amazeui.min.css"/>
+  <link rel="stylesheet" href="../../static/assets/css/admin.css">
+  <link rel="stylesheet" href="../../static/editormd/css/editormd.css" />
+  <script src="../../static/js/jquery.min.js" type="text/javascript" charset="utf-8" ></script>
+  <script src="../../static/assets/js/amazeui.min.js" type="text/javascript" charset="utf-8" ></script>
+</head>
+<body>
+  <div class="header">
+  </div>
+
+<div class="am-cf admin-main">
+  <!-- sidebar start -->
+ <div class ="navList">
+   
+ </div>
+   <script src="../../static/js/baseHtml.js" type="text/javascript" charset="utf-8" ></script>
+  <!-- sidebar end -->
+
+  <!-- content start -->
+  <div class="admin-content" style="padding-top:40px; ">
+
+      <div class="am-g">
+        <div class="am-u-sm-12 am-u-md-6">
+          <div class="am-btn-toolbar">
+            <div class="am-btn-group am-btn-group-xs">
+              <a href="./articleEdit.html" class="am-btn am-btn-default"><span class="am-icon-plus"></span> 新增</a>
+            </div>
+          </div>
+        </div>
+   
+        <div class="am-u-sm-12 am-u-md-3">
+          <div class="am-input-group am-input-group-sm">
+            <input type="text" class="am-form-field" name="like" >
+          <span class="am-input-group-btn">
+            <button class="am-btn am-btn-default" type="button" id="search" >搜索</button>
+          </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="am-g">
+        <div class="am-u-sm-12">
+          <form class="am-form">
+            <table class="am-table am-table-striped am-table-hover table-main">
+              <thead>
+              <tr>
+              <th class="table-id">ID</th><th class="table-title">标题</th><th class="table-type">类别</th><th class="table-author am-hide-sm-only">关键字</th><th class="table-date am-hide-sm-only">修改日期</th><th class="table-set">操作</th>
+              </tr>
+              </thead>
+              <tbody class="ddd">
+              
+             
+             
+              </tbody>
+            </table>
+            <div class="am-cf">
+              共 <span class="totalNum"></span> 条记录
+              <div class="am-fr">
+                <ul class="am-pagination">
+                  
+                </ul>
+              </div>
+            </div>
+          
+         
+          </form>
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <footer class="admin-content-footer">
+      <hr>
+      <p class="am-padding-left">© ©嘻嘻 &nbsp &nbsp&nbsp 2023-03</p>
+    </footer>
+  </div>
+
+  <!-- content end -->
+</div>
+
+<!--[if lt IE 9]>
+<script src="http://libs.baidu.com/jquery/1.11.1/jquery.min.js"></script>
+<script src="http://cdn.staticfile.org/modernizr/2.8.3/modernizr.js"></script>
+<script src="assets/js/amazeui.ie8polyfill.min.js"></script>
+<![endif]-->
+<!-- <script src="../../static/editormd/editormd.min.js"></script> -->
+<script src="../../static/js/Request.js"></script>
+
+<script type="text/javascript">
+function Edit(id) {
+    localStorage.setItem('articleID',id);
+     window.location.href = './articleEdit.html';
+     return false;
+}
+
+
+function Look(id) {
+    localStorage.setItem('articleID',id);
+     window.location.href = './articleLook.html';
+     return false;
+}
+ localStorage.removeItem('articleID');
+
+function Del(id) {
+   var retInfo  = askRequest('/api/article/del',{'id':id},"POST");
+   alert(retInfo.msg)
+  if(retInfo.result==1){
+    window.location.href = './article.html';
+  }
+  return;
+}
+
+like = "";
+var page = 0;
+function clickPage(page){
+  // page = page
+ return pages(page)
+
+}
+
+pages(page)
+function pages(page){
+
+    var retInfo  = askRequest('/api/article',{'page':page+1,"like":like},"POST");
+    var tableHtml = "";
+    if(retInfo.result==1){
+      info = retInfo.data
+      for (var i = 0; i < info.length; i++) {
+          tableHtml += "<tr>";
+          tableHtml += "<td '>"+info[i].ID+"</td>";
+          tableHtml += "<td>"+info[i].Title+"</td>";
+          tableHtml += '<td>'+info[i].Classify+'</td>';
+          tableHtml += "<td>"+info[i].Keyword+"</td>";
+          tableHtml += "<td>"+info[i].UpdateTime+"</td>";
+          tableHtml += '<td><div class="am-btn-toolbar"><div class="am-btn-group am-btn-group-xs"><button class="am-btn am-btn-default am-btn-xs am-text-success " type="button" onclick="Look('+info[i].ID+')"><span class="am-icon-hand-grab-o"></span> 查看</button><button class="am-btn am-btn-default am-btn-xs am-text-secondary" type="button" onclick="Edit('+info[i].ID+')"><span class="am-icon-pencil-square-o"></span> 编辑</button><button class="am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only"  type="button" onclick="Del('+info[i].ID+')"><span class="am-icon-trash-o"></span> 删除</button></div></div></td></tr>';
+      }
+    $(".totalNum").html(retInfo.total)
+    $(".ddd").html(tableHtml) 
+    // retInfo.total
+    pageHtml = pageFunc(retInfo.total,"clickPage",page)
+    $(".am-pagination").html(pageHtml)
+   
+  }
+}
+
+$("#search").click(function(){
+  like = $("input[name='like']").val();
+  page=0;
+  pages(0)
+});
+
+
+
+</script>
+
+</body>
+</html>

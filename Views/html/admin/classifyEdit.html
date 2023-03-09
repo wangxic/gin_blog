@@ -1,0 +1,112 @@
+<!doctype html>
+<html class="no-js fixed-layout">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>@ 嘻嘻个人 blog</title>
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-title" content="Amaze UI" />
+  <link rel="stylesheet" href="../../static/assets/css/amazeui.min.css"/>
+  <link rel="stylesheet" href="../../static/assets/css/admin.css">
+  <link rel="stylesheet" href="../../static/editormd/css/editormd.css" />
+  <script src="../../static/js/jquery.min.js" type="text/javascript" charset="utf-8" ></script>
+  <script src="../../static/assets/js/amazeui.min.js" type="text/javascript" charset="utf-8" ></script>
+</head>
+<body>
+  <div class="header">
+  </div>
+
+<div class="am-cf admin-main">
+  <!-- sidebar start -->
+ <div class ="navList">
+   
+ </div>
+   <script src="../../static/js/baseHtml.js" type="text/javascript" charset="utf-8" ></script>
+  <!-- sidebar end -->
+
+  <!-- content start -->
+  <div class="admin-content" style="padding-top:40px; ">
+    <div class="admin-content-body am-g" >
+      <div class="am-u-sm-11 am-u-sm-centered">
+
+       <form class="am-form am-form-horizontal">
+            <div class="am-form-group">
+              <label for="name" class="am-u-sm-2 am-form-label">类别名称</label>
+              <div class="am-u-sm-10">
+                <input type="text" id="name" value="" placeholder="类别名称">
+              </div>
+            </div>
+            <br/>
+            <div class="am-form-group">
+              <label for="sort" class="am-u-sm-2 am-form-label">排序</label>
+              <div class="am-u-sm-10">
+                <input type="number" id="sort"value="" placeholder="排序">
+              </div>
+            </div>
+            <br/>
+        
+            <div class="am-form-group">
+              <div class="am-u-sm-6">
+                <button type="button" class="am-btn am-btn-primary preserves">保存修改</button>
+              </div>
+            </div>
+          </form>
+      </div>
+    </div>
+    <footer class="admin-content-footer">
+      <hr>
+      <p class="am-padding-left">© ©嘻嘻 &nbsp &nbsp&nbsp 2023-03</p>
+    </footer>
+  </div>
+  <!-- content end -->
+</div>
+
+<!--[if lt IE 9]>
+<script src="http://libs.baidu.com/jquery/1.11.1/jquery.min.js"></script>
+<script src="http://cdn.staticfile.org/modernizr/2.8.3/modernizr.js"></script>
+<script src="assets/js/amazeui.ie8polyfill.min.js"></script>
+<![endif]-->
+<script src="../../static/js/Request.js"></script>
+
+<script type="text/javascript">
+$(function() {
+
+
+  var ClassifyId = localStorage.getItem('ClassifyId')
+  if(ClassifyId== null ){
+    ClassifyId = 0;
+  }
+  if(ClassifyId!=0){
+    var retInfo  = askRequest('/api/article/ClassifyLook',{'id':ClassifyId});
+  
+    if(retInfo.result==1){
+      $("#name").val(retInfo.data.Name)
+      $("#sort").val(retInfo.data.Sort)
+    }
+  }
+
+  $(".preserves").click(function(){
+    name = $("#name").val();
+    sort = $("#sort").val();
+ 
+    if(name == "" || sort == ""  ){
+      alert("输入框不能为空");
+      return false;
+    }
+    var retInfo  = askRequest('/api/article/ClassifyEdit',{'id':ClassifyId,"sort":sort,"name":name});
+    if(retInfo.result==1){
+      localStorage.removeItem('ClassifyId')
+      ClassifyId = 0;
+      window.location.href = './classify.html';
+      return false;
+
+    }
+  });
+});
+//     testEditor.getMarkdown();       // 获取 Markdown 源码
+// testEditor.getHTML();           // 获取 Textarea 保存的 HTML 源码
+// testEditor.getPreviewedHTML() //获取预览窗口里的 HTML，在开启 watch 且没有开启 saveHTMLToTextarea 时使用
+</script>
+
+</body>
+</html>

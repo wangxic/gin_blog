@@ -1,0 +1,98 @@
+<!doctype html>
+<html class="no-js fixed-layout">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>@ 嘻嘻个人 blog</title>
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-title" content="Amaze UI" />
+  <link rel="stylesheet" href="../../static/assets/css/amazeui.min.css"/>
+  <link rel="stylesheet" href="../../static/assets/css/admin.css">
+  <link rel="stylesheet" href="../../static/editormd/css/editormd.css" />
+  <script src="../../static/js/jquery.min.js" type="text/javascript" charset="utf-8" ></script>
+  <script src="../../static/assets/js/amazeui.min.js" type="text/javascript" charset="utf-8" ></script>
+</head>
+<body>
+  <div class="header">
+  </div>
+
+<div class="am-cf admin-main">
+  <!-- sidebar start -->
+ <div class ="navList">
+   
+ </div>
+   <script src="../../static/js/baseHtml.js" type="text/javascript" charset="utf-8" ></script>
+  <!-- sidebar end -->
+
+  <!-- content start -->
+  <div class="admin-content" style="padding-top:40px; ">
+    <div class="admin-content-body am-g" >
+      <div class="am-u-sm-11 am-u-sm-centered " id="lookCent">
+         <!-- <textarea style="display:none;" ></textarea> -->
+     
+      </div>
+    </div>
+    <footer class="admin-content-footer">
+      <hr>
+      <p class="am-padding-left">© ©嘻嘻 &nbsp &nbsp&nbsp 2023-03</p>
+    </footer>
+  </div>
+  <!-- content end -->
+</div>
+
+<!--[if lt IE 9]>
+<script src="http://libs.baidu.com/jquery/1.11.1/jquery.min.js"></script>
+<script src="http://cdn.staticfile.org/modernizr/2.8.3/modernizr.js"></script>
+<script src="assets/js/amazeui.ie8polyfill.min.js"></script>
+<![endif]-->
+
+<script src="../../static/editormd/lib/marked.min.js"></script>
+<script src="../../static/editormd/lib/marked.min.js"></script>
+<script src="../../static/editormd/lib/prettify.min.js"></script>
+<script src="../../static/editormd/lib/raphael.min.js"></script>
+<script src="../../static/editormd/lib/underscore.min.js"></script>
+<script src="../../static/editormd/lib/sequence-diagram.min.js"></script>
+<script src="../../static/editormd/lib/flowchart.min.js"></script>
+<script src="../../static/editormd/lib/jquery.flowchart.min.js"></script>
+<script src="../../static/editormd/editormd.js"></script>
+<script src="../../static/js/Request.js"></script>
+
+<script type="text/javascript">
+$(function() {
+    // var editormd = editormd("lookCent", {
+    //     width  : "100%",
+    //     height : "600px",
+    //     path   : "../../static/editormd/lib/"
+    // });
+    
+
+  var articleID = localStorage.getItem('articleID')
+  if(articleID==null ){
+    articleID = 0;
+  }
+  if(articleID!=0){
+    var retInfo  = askRequest('/api/article/look',{'id':articleID});
+    if(retInfo.result==1){
+        editormd.markdownToHTML("lookCent", {
+          markdown:retInfo.data.Cent,
+          // path   : "../../static/editormd/lib/",
+            htmlDecode      : "style,script,iframe",  // you can filter tags decode
+            emoji           : true,
+            taskList        : true,
+            tex             : true,  // 默认不解析
+            flowChart       : true,  // 默认不解析
+            sequenceDiagram : true,  // 默认不解析
+        });
+       
+    }
+  }
+
+});
+
+//     testEditor.getMarkdown();       // 获取 Markdown 源码
+// testEditor.getHTML();           // 获取 Textarea 保存的 HTML 源码
+// testEditor.getPreviewedHTML() //获取预览窗口里的 HTML，在开启 watch 且没有开启 saveHTMLToTextarea 时使用
+</script>
+
+</body>
+</html>
